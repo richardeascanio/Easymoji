@@ -1,0 +1,17 @@
+/* Estilos personalizados */
+
+/* Color para la tarjeta donde se encuentra el emoji ganador */
+#winner {
+  background: yellow;
+}
+
+/* Margen entre las tarjetas donde estan los emojis */
+.card {
+  margin: 5px;
+}
+
+/* alineacion y margenes al titulo de la tarjeta (el emoji) */
+.card-title {
+  text-align: center; 
+  padding: 10px;
+}
