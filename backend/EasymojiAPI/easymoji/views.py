@@ -16,7 +16,6 @@ from sklearn import preprocessing
 import pandas as pd
 from . emo_utils import *
 import spacy
-from django.core.cache import cache
 
 # Create your views here.
 
@@ -25,13 +24,21 @@ class TextoView(viewsets.ModelViewSet):
   queryset = texto.objects.all()
   serializer_class = textoSerializers
 
+def getModel():
+  loaded_model = joblib.load("/home/richard/Documents/Tesis/EasyMoji/def/backend/emojiModel.pkl")
+  return loaded_model;
+
+model = getModel()
+print('Model loaded')
+
 def sentences_to_indices2(X, max_len):
   m = X.shape[0]                                   #Cantidad de elementos en el Training Data
   print(m)
+  # Inicialicamoz X_indices como una matriz de ceros de numpy con la dimension maxima de palabras en una oracion
   X_indices = np.zeros((m, max_len),dtype=int)
   
   for i in range(m):                               # Loop sobre el training Data
-    
+      
     frase = X[i]
     frase = str(frase)
     tokens = nlp(frase)
@@ -55,15 +62,15 @@ def sentences_to_indices2(X, max_len):
       else:
         X_indices[i, j] = 0
       j += 1 
-          
-  
+            
+    
   return X_indices
 
 # Metodo que se va a ejecutar al hacer una peticion POST al servidor /status
 @api_view(["POST"])
 def textoreject(request):
   try:
-    model = joblib.load("/home/richard/Documents/Tesis/EasyMoji/def/backend/emojiModel.pkl")
+    model = getModel()
     print('modelo', model)
     print(request)
     mydata = JSONParser().parse(request)
