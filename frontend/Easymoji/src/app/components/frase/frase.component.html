@@ -6,7 +6,7 @@
   <form>
     <div class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Introduzca una oracion" aria-describedby="button-addon2" autofocus
-        [(ngModel)]="frase.texto" name="texto">
+        [(ngModel)]="frase.texto" name="texto" maxlength="42">
       <div class="input-group-append">
         <button class="btn btn-outline-primary" type="submit" id="button-addon2" (click)="saveFrase()">Procesar</button>
       </div>

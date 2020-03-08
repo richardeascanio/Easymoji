@@ -29,41 +29,40 @@ class TextoView(viewsets.ModelViewSet):
   serializer_class = textoSerializers
 
 def sentences_to_indices2(X, max_len):
-  m = X.shape[0]                                   #Cantidad de elementos en el Training Data
-  print(m)
-  X_indices = np.zeros((m, max_len),dtype=int)
   
-  for i in range(m):                               # Loop sobre el training Data
-    
+  m = X.shape[0]
+  print(m)
+
+  X_indices = np.zeros((m, max_len), dtype=int)
+
+  # loop sobre el training data
+  for i in range(m):
     frase = X[i]
     frase = str(frase)
     tokens = nlp(frase)
-    # Inicializamos j to 0
+
+    # Inicializamos j en 0
     j = 0
-    
-    # Loop sobre las palabras de sentence_words
+
+    # Loop sobre las palabras de la oracion
     for token in tokens:
-      if token.has_vector:
-        if ('?' in token.text or '¿' in token.text):
-          X_indices[i, j] = 4032
-        else:
-          if ('!' in token.text or '¡' in token.text):
-            X_indices[i, j] = 1748
-          else:
-            if ('jaja' in token.text or 'JAJA' in token.text or 'jeje' in token.text or 'JEJE' in token.text):
-              X_indices[i, j] = 2444
-            else :
-              if token.has_vector:
-                X_indices[i, j] = nlp.vocab.vectors.key2row[token.norm] # pasar de string a numero
+      if 'jaja' in token.text or 'JAJA' in token.text:
+        X_indices[i, j] = 2444
+      elif '?' in token.text or '¿' in token.text:
+        X_indices[i, j] = 1748
+      elif '!' in token.text or '¡' in token.text:
+        X_indices[i, j] = 4032
       else:
-        X_indices[i, j] = 0
-      j += 1 
-          
-  
+        if token.has_vector:
+          X_indices[i, j] = nlp.vocab.vectors.key2row[token.norm] # pasar de string a numero
+        else:
+          X_indices[i, j] = 0
+      j += 1
+
   return X_indices
 
 def getModel():
-  loaded_model = joblib.load("C:\\Users\\rasca\\OneDrive\\Escritorio\\emojiModel.pkl")
+  loaded_model = joblib.load("C:\\Users\\rasca\\OneDrive\\Escritorio\\emojiModelFlattenBidirectional.pkl")
   return loaded_model
 
 graph = tf.get_default_graph()
@@ -81,7 +80,7 @@ def rankText(text):
   global graph
   with graph.as_default():
     set_session(sess)
-    X_test_indices = sentences_to_indices2(x_test, 52)
+    X_test_indices = sentences_to_indices2(x_test, 47)
     print(x_test[0] +' '+  label_to_emoji(np.argmax(model.predict(X_test_indices))))
     # pedimos al modelo los mejores tres emojis junto con su porcentaje
     print(label_to_emoji(np.argsort(model.predict(X_test_indices)).item(21)) + ' con un porcentaje de:',model.predict(X_test_indices).item(np.argsort(model.predict(X_test_indices)).item(21)))
