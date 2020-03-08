@@ -1,11 +1,11 @@
 <!-- Jumbotron donde se encuentra el nombre, resumen y el input con el boton -->
 <div class="jumbotron">
   <h1 class="display-4">Easymoji</h1>
-  <p class="lead">Introduzca una frase para que nuestro modelo pueda predecir un emoji</p>
+  <p class="lead">Por favor, introduzca una frase para que el modelo EasyMoji pueda estudiarlo</p>
   <hr class="my-4">
   <form>
     <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Frase" aria-describedby="button-addon2" autofocus
+      <input type="text" class="form-control" placeholder="Introduzca una oracion" aria-describedby="button-addon2" autofocus
         [(ngModel)]="frase.texto" name="texto">
       <div class="input-group-append">
         <button class="btn btn-outline-primary" type="submit" id="button-addon2" (click)="saveFrase()">Procesar</button>
@@ -13,7 +13,6 @@
     </div>
   </form>
 </div>
-
 
 <!-- progress bar -->
 <div class="container" style="text-align: center;" [hidden]="!progress">
@@ -33,6 +32,7 @@
     </div>
   </div>
 
+  <!-- Segundo mejor emoji -->
   <div class="card">
     <h1 class="card-title">{{ emojis[1] }}</h1>
     <div class="card-body">
@@ -40,6 +40,7 @@
     </div>
   </div>
 
+  <!-- Tercer mejor emoji -->
   <div class="card">
     <h1 class="card-title">{{ emojis[2] }}</h1>
     <div class="card-body">
@@ -51,5 +52,11 @@
 
 <!-- Danger alert que avisa al usuario que algo indebido ocurrio en el sistema -->
 <div class="alert alert-danger" role="alert" [hidden] = "!showDanger">
-  Error! Try again
+  Error! Intente nuevamente
 </div>
+
+<footer class="container text-center" style="color: white; margin-top: 50px;">
+  <p class="lead">
+    Trabajo de grado Ingenieria de Sistemas Richard Ascanio C y Manuel Ojeda Universidad Metropolitana
+  </p>
+</footer>
